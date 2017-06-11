@@ -1,0 +1,35 @@
+{
+  "name": "bread",
+  "version": "1.0.0",
+  "description": "integrate a merchant api",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexiushaledubuque/bfcc.git"
+  },
+  "author": "Alexius Hale-Dubuque",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alexiushaledubuque/bfcc/issues"
+  },
+  "homepage": "https://github.com/alexiushaledubuque/bfcc#readme",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.17.2",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.3",
+    "express-handlebars": "^3.0.0",
+    "express-session": "^1.15.3",
+    "express-validator": "^3.2.0",
+    "hbs": "^4.0.1",
+    "lodash": "^4.17.4",
+    "mongodb": "^2.2.28",
+    "morgan": "^1.8.2",
+    "passport": "^0.3.2",
+    "serve-favicon": "^2.4.3"
+  }
+}
