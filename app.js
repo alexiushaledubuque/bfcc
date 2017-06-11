@@ -9,6 +9,11 @@ const flash = require('connect-flash');
 const validator = require('express-validator');
 const hbs = require('hbs')
 const fs = require('fs')
+const MongoStore = require('connect-mongodb')(session);
+
+// make route for products
+//const productRoute = require('./appRoutes/index')
+const Product = require('./models/product')
 
 const app = express();
 
@@ -22,6 +27,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(validator());
 app.use(cookieParser());
+// app.use(session({
+//   secret: 'mysupersecret', 
+//   resave: false, 
+//   saveUninitialized: false,
+//   //store: new MongoStore({ mongooseConnection: mongoose.connection }),
+//   cookie: { maxAge: 180 * 60 * 1000 }
+// }));
+app.use(flash());
 
 app.use((req, res, next) => { // middleware 
   var now = new Date().toString();
@@ -40,23 +53,40 @@ app.use((req, res, next) => { // middleware
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Helper to format year for <footer>
 hbs.registerHelper('getCurrentYear', () => {
   return new Date().getFullYear()
 });
 
+// Helper to loop over the properties of the object - easy rendering in UI
+hbs.registerHelper('eachProduct', ((context, options) => {
+    var ret = "";
+    for(var prop in context)
+    {
+        ret = ret + options.fn({property:prop,value:context[prop]});
+    }
+    return ret;
+}));
+
 app.get('/', (req, res) => {
-  res.render('main.hbs', {
-    // pageTitle: 'Home Page',
-    // welcomeMessage: "Welcome to my home page! Howdy, I'm Alexius!"
-  })
+  Product.find().then((docs) => {
+    if (!docs) {
+      console.log('DOCS NOT FOUND!')
+    }
+    var products = [];
+    var excess = 3;
+    for (var i = 0; i < docs.length; i += excess) {
+        products.push(docs.slice(i, i + excess));
+    }
+    res.render('main.hbs', {
+      pageTitle: 'Home Page',
+      welcomeMessage: "Welcome to my home page! Howdy, I'm Alexius!",
+      title: 'Shopping Cart', 
+      products
+    })
+  }).catch((e) => {
+    console.log('ERROR: ', e)
+  }) 
 });
-
-
-
-
-
-
-
-
 
 module.exports = app;

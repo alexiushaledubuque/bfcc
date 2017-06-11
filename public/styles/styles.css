@@ -1,0 +1,46 @@
+.thumbnail img {
+    max-height: 150px;
+}
+
+.thumbnail .description {
+    color: #7f7f7f;
+}
+
+.price {
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+}
+
+.minus-btn img {
+  margin-bottom: 3px;
+  height: 20px;
+  width: 20px;
+  border-color: white
+}
+
+.plus-btn img {
+  /*margin-top: 2px;
+  height: 20px;
+  width: 20px;*/
+}
+
+.quantity {
+	/*margin: 0 auto;*/
+	margin-left: 33%;
+  /*padding-top: 20px;
+  margin-right: 60px;*/
+}
+.quantity input {
+	height: 20px;
+	width: 10px;
+	border-radius: 10px;
+  -webkit-appearance: none;
+  border: none;
+  text-align: center;
+  width: 32px;
+  font-size: 16px;
+  color: white;
+  font-weight: 400;
+  background-color: gray;
+}

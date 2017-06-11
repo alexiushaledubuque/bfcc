@@ -4,18 +4,45 @@
 		<meta charset="utf-8">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"> -->
-    <link rel='stylesheet' href='../public/styles/style.css'/>
+    <link rel='stylesheet' href='/styles/styles.css'/>
 		<title>Drone Expo</title>
 	</head>
 	<body>
 		{{> header}}
 
-			<p>Add some stuff</p>
+		{{# each products }}
+	    <div class="row">
+	      {{# each this }}
+	          <div class="col-md-4">
+	          	<a href="/add-to-cart/{{this._id}}" class="btn btn-default pull-right minus-btn" role="button">
+	            	<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+	            </a>
+	              <div class="thumbnail">
+	                  <img src="{{ this.imagePath }}" alt="..." class="img-responsive">
+	                  <div class="caption">
+	                      <h3>{{ this.title }}</h3>
+	                      <p class="description">{{ this.description }}</p>
+	                      <div class="clearfix">
+	                         <div class="price pull-left">${{ this.price }}</div>
+	                         <div class="quantity pull-left">
+										          <input id="bg-quanity" type="text" name="name" value="1" readonly="">
+										        </div>
 
+	                          <a href="/add-to-cart/{{this._id}}" class="btn btn-success pull-right plus-btn" role="button">
+	                          	<span class="glyphicon glyphicon-shopping-cart" aria-hidden="true">
+	                          	</span>  Add to Cart
+	                          </a>
+	                      </div>
+	                  </div>
+	              </div>
+	          </div>
+	      {{/each}}
+	    </div>
+		{{/each}}
 
 		{{> footer}}
-	
 		<script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
+		<script src="../js/shopping-cart.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	</body>
 </html>
