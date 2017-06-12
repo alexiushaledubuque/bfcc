@@ -5,7 +5,8 @@ MongoClient.connect('mongodb://localhost:27017/Shopping', (err, db) => {
         return console.log('Unable to connect to MongoDB server')
     }
     console.log('Connected to MongoDB server')
-
+    
+    // recreate a new collection with unique data
     db.collection('products').insertMany([
         {   imagePath: 'https://thumb.ibb.co/iiqPVv/drone1.jpg',
             title: 'GPX - Sky Rider Eagle Pro Drone with Remote Controller',
@@ -36,8 +37,6 @@ MongoClient.connect('mongodb://localhost:27017/Shopping', (err, db) => {
         if (err) {
             return console.log('Unable to insert products into Products: ', err)
         }
-        console.log(JSON.stringify(result.ops, null, 4))
-        console.log(result.ops[0]._id.getTimestamp())
     })
      db.close()
 })

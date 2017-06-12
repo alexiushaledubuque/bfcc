@@ -9,12 +9,10 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const validator = require('express-validator');
 const hbs = require('hbs')
-const fs = require('fs')
+const fs = require('fs') // server log
 
 const MongoStore = require('connect-mongo')(session);
 
-// make route for products & buggy
-//const productRoute = require('./appRoutes/index')
 const Product = require('./models/product')
 var Cart = require('./models/cart');
 
@@ -23,11 +21,8 @@ const app = express();
 mongoose.Promise = global.Promise;
 mongoose.connect('localhost:27017/Shopping');
 
-// app.set('views', PATH.resolve(__dirname, 'templates/layouts'));
 app.engine('hbs', expressHbs({extname:'hbs', defaultLayout:'main'}));
 app.set('view engine', 'hbs');
-
-// app.engine('.hbs', expressHbs({defaultLayout: 'main', extname: '.hbs'}));
 
 // hbs.registerPartials(__dirname + '/views/partials')
 // app.set('view engine', 'hbs')
@@ -58,7 +53,6 @@ app.use((req, res, next) => { // middleware
   var now = new Date().toString();
   var log = `${now}: ${req.method} ${req.url}`;
 
-  console.log(log) // logger of each request
   fs.appendFile('server.log', log + '\n', (err) => {
     if (err) {
       console.log('Unable to append to server.log.')
@@ -121,13 +115,20 @@ app.get('/add-to-cart/:id', function(req, res, next) {
     });
 });
 
-app.get('/reduce/:id', function(req, res, next) {
-    console.log('REDUCING THE SHOPPING CART!!!')
+app.get('/extra-one/:id', function(req, res, next) {
     var productId = req.params.id;
-    console.log('PRODUCT ID: ', productId)
     var cart = new Cart(req.session.cart ? req.session.cart : {});
 
-    cart.reduceByOne(productId);
+    cart.updatePlusOne(productId);
+    req.session.cart = cart;
+    res.redirect('/shopping-cart');
+}); 
+
+app.get('/reduce/:id', function(req, res, next) {
+    var productId = req.params.id;
+    var cart = new Cart(req.session.cart ? req.session.cart : {});
+
+    cart.deductOne(productId);
     req.session.cart = cart;
     res.redirect('/shopping-cart');
 }); 
@@ -143,10 +144,9 @@ app.get('/remove/:id', function(req, res, next) {
 
 app.get('/shopping-cart', function(req, res, next) {
    if (!req.session.cart) {
-       return res.render('shopping-cart', {products: null});
+       return res.render('shop/shopping-cart', {products: null});
    } 
     var cart = new Cart(req.session.cart);
-    console.log('CART: ', cart)
     res.render('shop/shopping-cart', {
       products: cart.generateArray(), 
       totalPrice: cart.totalPrice
@@ -154,8 +154,12 @@ app.get('/shopping-cart', function(req, res, next) {
 
 });
 
+app.get('/shopping-cart/checkout', function(req, res, next) {
+    console.log('Rendering View!')
+    res.render('shop/complete', {title: 'Bread Complete'});
+});
+
 app.get('/checkout', function(req, res, next) {
-    console.log('/CHECKOUT!!!')
     if (!req.session.cart) {
         return res.redirect('/shopping-cart');
     }
@@ -169,40 +173,30 @@ app.get('/checkout', function(req, res, next) {
 });
 
 app.post('/checkout', function(req, res, next) {
-  console.log('POST CHECKOUT!!!')
-    // if (!req.session.cart) {
-    //     return res.redirect('/shopping-cart');
-    // }
-    // var cart = new Cart(req.session.cart);
-    
-    // var stripe = require("stripe")(
-    //     "sk_test_fwmVPdJfpkmwlQRedXec5IxR"
-    // );
-
-    // stripe.charges.create({
-    //     amount: cart.totalPrice * 100,
-    //     currency: "usd",
-    //     source: req.body.stripeToken, // obtained with Stripe.js
-    //     description: "Test Charge"
-    // }, function(err, charge) {
-    //     if (err) {
-    //         req.flash('error', err.message);
-    //         return res.redirect('/checkout');
-    //     }
-    //     var order = new Order({
-    //         user: req.user,
-    //         cart: cart,
-    //         address: req.body.address,
-    //         name: req.body.name,
-    //         paymentId: charge.id
-    //     });
-    //     order.save(function(err, result) {
-    //         req.flash('success', 'Successfully bought product!');
-    //         req.session.cart = null;
-    //         res.redirect('/');
-    //     });
-    // }); 
+    if (!req.session.cart) {
+        return res.redirect('shop/shopping-cart');
+    }
+    var cart = new Cart(req.session.cart);
+    req.flash('success', 'Order Complete!');
+    req.session.cart = null;
+    res.redirect('/'); 
 });
 
+app.get('/account/signin', function(req, res, next) {
+  res.render('account/signin');
+});
+
+app.get('/account/logout', function(req, res, next) {
+  console.log('logging out')
+  res.render('/');
+});
+
+app.get('/account/signup', function(req, res, next) {
+  res.render('account/signup');
+});
+
+app.get('/account/profile', function(req, res, next) {
+  res.render('account/profile');
+});
 
 module.exports = app;

@@ -11,10 +11,11 @@
                         <strong>{{ this.item.title }}</strong>
                         <span class="label label-success">${{ this.price }}</span>
                         <div class="btn-group">
-                            <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown">Action <span class="caret"></span></button>
+                            <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown"> Update <span class="caret"></span></button>
                             <ul class="dropdown-menu">
-                                <li><a href="/reduce/{{this.item._id}}">Reduce by 1</a></li>
-                                <li><a href="/remove/{{this.item._id}}">Remove All</a></li>
+                                <li><a href="/extra-one/{{this.item._id}}">Add 1</a></li>
+                                <li><a href="/reduce/{{this.item._id}}">Remove 1</a></li>
+                                <li><a href="/remove/{{this.item._id}}">Delete from Cart</a></li>
                             </ul>
                         </div>
                     </li>
@@ -29,9 +30,6 @@
     </div>
     <hr>
     <div class="row">
-        <div class="col-md-2 col-md-offset-5">
-            <a href="/checkout" type="button" style="display: none;" class="btn btn-success">Swipe Checkout</a>
-        </div>
          <div class="col-md-2 col-md-offset-5">
              <form id="checkout-form" action="checkout" method="post">
           <!-- Note that you must pass a div element -->
@@ -49,7 +47,7 @@
 
         <!-- Create the `opts` object -->
 
-        <script type="text/javascript" src="/js/breadout.js"></script>
+        <script type="text/javascript" src="/js/passToBread.js"></script>
 <hr>
 {{ else }}
     <div class="row">

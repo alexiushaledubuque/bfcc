@@ -1,5 +1,3 @@
-console.log("CHECKOUT.JS")
-
 var items = [];
           // We'll assume you have a `cart` object which has `products`
           // the shopper has chosen.
@@ -56,11 +54,10 @@ var items = [];
               }
             ],
             tax: 900, // optional
-            shippingContact: shippingContact,
-            billingContact: billingContact
+            shippingContact,
+            billingContact
           };
 
           // Lastly, call `checkout` with `opts` as the argument.
           bread.checkout(opts);
-          console.log('CALLED BREAD.CHECKOUT!')
 
