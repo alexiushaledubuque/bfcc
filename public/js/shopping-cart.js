@@ -28,9 +28,10 @@ $('.plus-btn').on('click', function(e) {
     if (value < 100) {
         value = value + 1;
     } else {
-        value =100;
+        value = 100;
     }
  
     $input.val(value); 
+
     // $total.text(parseInt(price[0].innerHTML) * value)   
 });

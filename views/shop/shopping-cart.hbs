@@ -1,0 +1,60 @@
+{{# if products }}
+<style>
+
+</style>
+    <div class="row">
+        <div class="col-sm-6 col-md-6 col-md-offset-3 col-sm-offset-3">
+            <ul class="list-group">
+                {{# each products }}
+                    <li class="list-group-item">
+                        <span class="badge">{{ this.qty }}</span>
+                        <strong>{{ this.item.title }}</strong>
+                        <span class="label label-success">${{ this.price }}</span>
+                        <div class="btn-group">
+                            <button class="btn btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown">Action <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li><a href="/reduce/{{this.item._id}}">Reduce by 1</a></li>
+                                <li><a href="/remove/{{this.item._id}}">Remove All</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6 col-md-6 col-md-offset-3 col-sm-offset-3">
+            <strong>Total: {{ totalPrice }}</strong>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-2 col-md-offset-5">
+            <a href="/checkout" type="button" style="display: none;" class="btn btn-success">Swipe Checkout</a>
+        </div>
+         <div class="col-md-2 col-md-offset-5">
+             <form id="checkout-form" action="checkout" method="post">
+          <!-- Note that you must pass a div element -->
+          <div id='bread-checkout-btn'></div>
+        </form>
+        </div>
+    </div>
+        <!-- Include our button within a form for seamless integration -->
+        
+
+        <!-- Load the bread.js script (this can be here or usually in the head) -->
+
+        <script src="https://checkout-sandbox.getbread.com/bread.js" 
+            data-api-key="7101ea30-8ae3-47ab-a8bd-235860d36f3e"></script>
+
+        <!-- Create the `opts` object -->
+
+        <script type="text/javascript" src="/js/breadout.js"></script>
+<hr>
+{{ else }}
+    <div class="row">
+        <div class="col-sm-6 col-md-6 col-md-offset-3 col-sm-offset-3">
+            <h2>No Items in Cart</h2>
+        </div>
+    </div>
+{{/if}}
