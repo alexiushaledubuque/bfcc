@@ -69,17 +69,17 @@ var cart = {name: "DJI Phantom 4 Pro Drone Quadcopter",
               }
               // Via Ajax call you send the token to your server, and then redirect the user
               $.ajax({
+                async: false,
                 url: '/shopping-cart/checkout',
-                type: 'POST',
+                type: 'GET',
                 data: {
                   token: tx_token
                 },
-              }).done(function(data){
+              }).done((err, data) => {
                 if (data == undefined){
                     alert("There was an error!" + err);
                     return;
                 }
-                console.log(JSON.stringify(data, null, 4))
               });
             }
           }

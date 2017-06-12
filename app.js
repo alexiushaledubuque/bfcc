@@ -157,6 +157,7 @@ app.get('/shopping-cart', function(req, res, next) {
 app.get('/shopping-cart/checkout', function(req, res, next) {
     console.log('Rendering View!')
     res.render('shop/complete', {title: 'Bread Complete'});
+    //res.redirect('/')
 });
 
 app.get('/checkout', function(req, res, next) {
