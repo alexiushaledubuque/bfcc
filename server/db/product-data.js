@@ -36,6 +36,8 @@ MongoClient.connect('mongodb://localhost:27017/Shopping', (err, db) => {
     ], (err, result) => {
         if (err) {
             return console.log('Unable to insert products into Products: ', err)
+        } else {
+            return console.log('Shopping database recreated successfully: ', result)
         }
     })
      db.close()

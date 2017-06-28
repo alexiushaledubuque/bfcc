@@ -16,13 +16,13 @@
             <ul class="nav navbar-nav navbar-right">
                 <li>
                     <a href="/shopping-cart/">
-                        <span class="badge">{{session.cart.totalQty}}</span>
                         <i class="fa fa-shopping-cart" aria-hidden="true"></i> Checkout
+                        <span class="badge">{{session.cart.totalQty}}</span>
                     </a>
                 </li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user" aria-hidden="true"></i> Account <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu"> <!-- Section under not complete -->
                         {{# if login }}
                             <li><a href="/account/profile">Profile</a></li>
                             <li role="separator" class="divider"></li>

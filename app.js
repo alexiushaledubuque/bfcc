@@ -24,6 +24,7 @@ mongoose.connect('localhost:27017/Shopping');
 app.engine('hbs', expressHbs({extname:'hbs', defaultLayout:'main'}));
 app.set('view engine', 'hbs');
 
+// Optional format to load partials in the view engine
 // hbs.registerPartials(__dirname + '/views/partials')
 // app.set('view engine', 'hbs')
 
@@ -101,66 +102,66 @@ app.get('/', (req, res) => {
   }) 
 });
 
-app.get('/add-to-cart/:id', function(req, res, next) {
+app.get('/add-to-cart/:id', ((req, res, next) => {
     var productId = req.params.id;
     var cart = new Cart(req.session.cart ? req.session.cart : {});
 
-    Product.findById(productId, function(err, product) {
-       if (err) {
+    Product.findById(productId, ((err, product) => {
+      if (err) {
            return res.redirect('/');
        }
-        cart.add(product, product.id);
-        req.session.cart = cart;
-        res.redirect('/');
-    });
-});
+      cart.add(product, product.id);
+      req.session.cart = cart;
+      res.redirect('/');
+    }));
+}));
 
-app.get('/extra-one/:id', function(req, res, next) {
+app.get('/extra-one/:id', ((req, res, next) => {
     var productId = req.params.id;
     var cart = new Cart(req.session.cart ? req.session.cart : {});
 
     cart.updatePlusOne(productId);
     req.session.cart = cart;
     res.redirect('/shopping-cart');
-}); 
+})); 
 
-app.get('/reduce/:id', function(req, res, next) {
+app.get('/reduce/:id', ((req, res, next) => {
     var productId = req.params.id;
     var cart = new Cart(req.session.cart ? req.session.cart : {});
 
     cart.deductOne(productId);
     req.session.cart = cart;
     res.redirect('/shopping-cart');
-}); 
+})); 
 
-app.get('/remove/:id', function(req, res, next) {
+app.get('/remove/:id', ((req, res, next) => {
   var productId = req.params.id;
     var cart = new Cart(req.session.cart ? req.session.cart : {});
 
     cart.removeItem(productId);
     req.session.cart = cart;
     res.redirect('/shopping-cart');
-});
+}));
 
-app.get('/shopping-cart', function(req, res, next) {
+app.get('/shopping-cart', ((req, res, next) => {
    if (!req.session.cart) {
        return res.render('shop/shopping-cart', {products: null});
    } 
     var cart = new Cart(req.session.cart);
     res.render('shop/shopping-cart', {
       products: cart.generateArray(), 
-      totalPrice: cart.totalPrice
+      totalPrice: cart.totalPrice,
+      totalQty: cart.totalQty
     });
+}));
 
-});
-
-app.get('/shopping-cart/checkout', function(req, res, next) {
+app.get('/shopping-cart/checkout', ((req, res, next) => {
     console.log('Rendering View!')
     res.render('shop/complete', {title: 'Bread Complete'});
     //res.redirect('/')
-});
+}));
 
-app.get('/checkout', function(req, res, next) {
+app.get('/checkout', ((req, res, next) => {
     if (!req.session.cart) {
         return res.redirect('/shopping-cart');
     }
@@ -171,9 +172,9 @@ app.get('/checkout', function(req, res, next) {
       errMsg: errMsg, 
       noError: !errMsg
     });
-});
+}));
 
-app.post('/checkout', function(req, res, next) {
+app.post('/checkout', ((req, res, next) => {
     if (!req.session.cart) {
         return res.redirect('shop/shopping-cart');
     }
@@ -181,23 +182,23 @@ app.post('/checkout', function(req, res, next) {
     req.flash('success', 'Order Complete!');
     req.session.cart = null;
     res.redirect('/'); 
-});
+}));
 
-app.get('/account/signin', function(req, res, next) {
+app.get('/account/signin', ((req, res, next) => {
   res.render('account/signin');
-});
+}));
 
-app.get('/account/logout', function(req, res, next) {
+app.get('/account/logout', ((req, res, next) => {
   console.log('logging out')
   res.render('/');
-});
+}));
 
-app.get('/account/signup', function(req, res, next) {
+app.get('/account/signup', ((req, res, next) => {
   res.render('account/signup');
-});
+}));
 
-app.get('/account/profile', function(req, res, next) {
+app.get('/account/profile', ((req, res, next) => {
   res.render('account/profile');
-});
+}));
 
 module.exports = app;
